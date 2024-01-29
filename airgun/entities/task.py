@@ -52,7 +52,7 @@ class ShowAllTasks(NavigateStep):
 
     @retry_navigation
     def step(self, *args, **kwargs):
-        self.view.menu.select('Monitor', 'Satellite Tasks', 'Tasks')
+        self.view.menu.select('Monitor', 'Foreman Tasks', 'Tasks')
 
 
 @navigator.register(TaskEntity, 'Details')
