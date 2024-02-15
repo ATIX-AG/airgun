@@ -2,6 +2,7 @@ from time import sleep
 
 from navmazing import NavigateToSibling
 from wait_for import wait_for
+import widgetastic_patternfly4
 
 from airgun.entities.base import BaseEntity
 from airgun.exceptions import DisabledWidgetError
@@ -52,7 +53,11 @@ class HostEntity(BaseEntity):
         """Get curl command generated on Register Host page"""
         view = self.navigate_to(self, 'Register')
         if values is not None:
-            view.fill(values)
+            try:
+                view.fill(values)
+            # Race condition where input field is shown as disable for some ms.
+            except widgetastic_patternfly4.formselect.FormSelectDisabled:
+                view.fill(values)
         if view.general.activation_keys.read():
             self.browser.click(view.generate_command)
             self.browser.plugin.ensure_page_safe()
